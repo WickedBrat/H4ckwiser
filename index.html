@@ -1,0 +1,244 @@
+<!DOCTYPE html> 
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Tri Hacker Cup | H4ckwiser</title>
+	<link rel="stylesheet" type="text/css" href="style.css" />	
+	<link rel="stylesheet" href="form.css">
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+
+<style>
+    html, body{
+      width: 100%;
+      height: 100%;
+      margin: 50 50 50 50;
+      padding: 50 50 50 50;
+    }
+    #map-canvas {
+      width: 50%;
+      position: center;
+      height: 50%;
+    }
+    .gm-style-iw {
+      text-align: center;
+    }
+  </style>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js">
+</script>
+<script>
+  var map;
+  var geoJSON;
+  var request;
+  var gettingData = false;
+  var openWeatherMapKey = "f511320e221c31c9353aa972b0915f32"
+  function initialize() {
+    var mapOptions = {
+      zoom: 4,
+      center: new google.maps.LatLng(50,-50)
+    };
+    map = new google.maps.Map(document.getElementById('map-canvas'),
+        mapOptions);
+    // Add interaction listeners to make weather requests
+    google.maps.event.addListener(map, 'idle', checkIfDataRequested);
+    // Sets up and populates the info window with details
+    map.data.addListener('click', function(event) {
+      infowindow.setContent(
+       "<img src=" + event.feature.getProperty("icon") + ">"
+       + "<br /><strong>" + event.feature.getProperty("city") + "</strong>"
+       + "<br />" + event.feature.getProperty("temperature") + "&deg;C"
+       + "<br />" + event.feature.getProperty("weather")
+       );
+      infowindow.setOptions({
+          position:{
+            lat: event.latLng.lat(),
+            lng: event.latLng.lng()
+          },
+          pixelOffset: {
+            width: 0,
+            height: -15
+          }
+        });
+      infowindow.open(map);
+    });
+  }
+  var checkIfDataRequested = function() {
+    // Stop extra requests being sent
+    while (gettingData === true) {
+      request.abort();
+      gettingData = false;
+    }
+    getCoords();
+  };
+  // Get the coordinates from the Map bounds
+  var getCoords = function() {
+    var bounds = map.getBounds();
+    var NE = bounds.getNorthEast();
+    var SW = bounds.getSouthWest();
+    getWeather(NE.lat(), NE.lng(), SW.lat(), SW.lng());
+  };
+  // Make the weather request
+  var getWeather = function(northLat, eastLng, southLat, westLng) {
+    gettingData = true;
+    var requestString = "http://api.openweathermap.org/data/2.5/box/city?bbox="
+                        + westLng + "," + northLat + "," //left top
+                        + eastLng + "," + southLat + "," //right bottom
+                        + map.getZoom()
+                        + "&cluster=yes&format=json"
+                        + "&APPID=" + openWeatherMapKey;
+    request = new XMLHttpRequest();
+    request.onload = proccessResults;
+    request.open("get", requestString, true);
+    request.send();
+  };
+  // Take the JSON results and proccess them
+  var proccessResults = function() {
+ 
+    var results = JSON.parse(this.responseText);
+    if (results.list.length > 0) {
+        resetData();
+        for (var i = 0; i < results.list.length; i++) {
+          geoJSON.features.push(jsonToGeoJson(results.list[i]));
+        }
+        drawIcons(geoJSON);
+    }
+  };
+  var infowindow = new google.maps.InfoWindow();
+  // For each result that comes back, convert the data to geoJSON
+  var jsonToGeoJson = function (weatherItem) {
+    var feature = {
+      type: "Feature",
+      properties: {
+        city: weatherItem.name,
+        weather: weatherItem.weather[0].main,
+        temperature: weatherItem.main.temp,
+        min: weatherItem.main.temp_min,
+        max: weatherItem.main.temp_max,
+        humidity: weatherItem.main.humidity,
+        pressure: weatherItem.main.pressure,
+        windSpeed: weatherItem.wind.speed,
+        windDegrees: weatherItem.wind.deg,
+        windGust: weatherItem.wind.gust,
+        icon: "http://openweathermap.org/img/w/"
+              + weatherItem.weather[0].icon  + ".png",
+        coordinates: [weatherItem.coord.lon, weatherItem.coord.lat]
+      },
+      geometry: {
+        type: "Point",
+        coordinates: [weatherItem.coord.lon, weatherItem.coord.lat]
+      }
+    };
+    // Set the custom marker icon
+    map.data.setStyle(function(feature) {
+      return {
+        icon: {
+          url: feature.getProperty('icon'),
+          anchor: new google.maps.Point(25, 25)
+        }
+      };
+    });
+    // returns object
+    return feature;
+  };
+  // Add the markers to the map
+  var drawIcons = function (weather) {
+     map.data.addGeoJson(geoJSON);
+     // Set the flag to finished
+     gettingData = false;
+  };
+  // Clear data layer and geoJSON
+  var resetData = function () {
+    geoJSON = {
+      type: "FeatureCollection",
+      features: []
+    };
+    map.data.forEach(function(feature) {
+      map.data.remove(feature);
+    });
+  };
+  google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+</head>
+<body  onload="myFunction()" style="margin:0;">
+<div id="loader"></div>
+<div style="display:none;" id="myDiv" class="animate-bottom">
+<header>
+<h1>Weather Info</h1>
+</header>
+<br><br>
+<div style="float: left; padding-left: 500px; font-size: 2000%;">
+<font color="orange"><i class="fa fa-sun-o fa-spin"></i></font>
+</div>
+
+<p style=" text-align: center; color: black;" id="heading" ><font face="font"><font size=200%><b><br><br>Tri Hacker Cup</b></font><br>Team Name: H4ckwiser<br>Weather app</p></font></font>   
+
+<div class="form">
+          <div id="UserArea">
+            <div id="stateWrapper">
+                <input type="text" id="cityInput" placeholder="Enter a State"/>
+            </div>
+            <br/>
+            <div id="countryWrapper">
+                 <input type="text" id="countryInput" placeholder="Enter a Country"/>
+            </div>
+            <br/>
+            <div id="buttonArea" style="size: 200%;">
+                <input type="submit" id="submitWeather"/>
+            </div>
+        </div>
+        <div id="WeatherWrapper">
+        </div>
+        </section>
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script> 
+        <script type="text/javascript" src="mainWeather.js"></script>
+        <script type="text/css" src="style.css"></script>
+
+
+</div>
+<br><br>
+
+<font size="200%" color="green">To find out average of weather of any 4 cities : </font>
+
+          <div id="UserArea">
+            <div id="stateWrapper">
+                <input type="text" id="cityInput1" placeholder="Enter city 1"/>
+            </div>
+            <br/>
+            <div id="stateWrapper">
+                 <input type="text" id="cityInput2" placeholder="Enter city 2"/>
+            </div>
+            <br/>
+            <div id="stateWrapper">
+                 <input type="text" id="cityInput3" placeholder="Enter city 3"/>
+            </div>
+            <br/>
+            <div id="stateWrapper">
+                 <input type="text" id="cityInput4" placeholder="Enter city 4"/>
+            </div>
+            <div id="buttonArea" style="size: 200%;">
+                <input type="submit" id="submitWeather1"/>
+            </div>
+        </div>
+        <div id="WeatherWrapper">
+        </div>
+        </section>
+
+<br><br><font size="200%" color="green">Explore the weather of any city through Google Maps : </font><br><br>
+</div>
+
+
+<div id="map-canvas" style="padding : 0 0 0 500px;"></div>
+<script>
+var myVar;
+function myFunction() {
+    myVar = setTimeout(showPage, 3000);
+}
+function showPage() {
+  document.getElementById("loader").style.display = "none";
+  document.getElementById("myDiv").style.display = "block";
+}
+</script>
+</body>
+</html>

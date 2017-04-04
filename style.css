@@ -1,0 +1,289 @@
+@import 'https://fonts.googleapis.com/css?family=Alegreya+Sans';
+
+@font-face {
+   font-family: font; 
+   src: url('font.ttf');
+} 
+#loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Add animation to "page content" */
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s
+}
+
+@-webkit-keyframes animatebottom {
+  from { bottom:-100px; opacity:0 } 
+  to { bottom:0px; opacity:1 }
+}
+
+@keyframes animatebottom { 
+  from{ bottom:-100px; opacity:0 } 
+  to{ bottom:0; opacity:1 }
+}
+
+#myDiv {
+  display: none;
+  text-align: center;
+}
+
+
+*{
+	margin: 0;
+	padding: 0;
+	border: 0; 
+}
+
+body{
+	
+	background-image: url('bg.jpg');
+	background-size: 100%;
+	background-opacity: 50%;
+	color: black;
+	font-family: 'font',sans-serif;
+	margin: 0;
+}
+
+h2{
+	font-family: 'font',sans-serif;
+	font-size: 250%;
+	font-weight: 700;
+	text-align: center;
+	padding-top:  2%;
+}
+#heading{
+	font-family: 'font',sans-serif;
+	padding: 40px 40px 40px 40px;
+}
+
+}
+ul{
+	font-family: 'font ',sans-serif;
+}
+h3{
+	font-family: 'font',sans-serif;
+	font-size: 175%;
+	line-height:155%;
+	padding: 5% 0;
+	font-weight: 400;
+}
+
+p{
+	font-family: 'font',sans-serif;
+	font-size: 160%;
+	line-height: 150%;
+	padding: 3%;
+	text-indent: 2%;
+	text-align: justify;
+}
+img{
+	min-width:100%;
+	height: auto;
+	width: 100%;
+	margin-bottom: -4px;  
+}
+
+header{
+	font-family: 'font',sans-serif;
+	background-color: black;
+	width: 100%;
+	height: 86px;
+}
+
+#header-inner{
+	max-width: 1600px;
+	margin: 0 auto;
+}
+#logo{
+	margin: 0px;
+	padding: 3% 0 0 8%;
+	float: left;
+	width: 150px;
+}
+
+/* Start Navgation */
+
+nav{
+	float: right;
+	padding: 25px 20px 0 0; 
+}
+#menu-icon{
+	display: hidden;
+	width: 40px;
+	height: 40px;
+}
+
+a:hover #menu-icon{
+	border-radius: 4px 4px 0 0; 
+}
+
+ul{
+	list-style-type: none;
+}
+
+nav ul li{
+	font-family: 'font ',sans-serif;
+	font-size: 150%;
+	display: inline-block;
+	float: left;
+	padding: 10px;
+}
+
+nav ul li a{
+	color: #F5F5F5;
+	text-decoration: none;
+}
+
+nav ul li a:hover{
+	color:#C3D7DF;
+}
+
+.current{
+
+	color: blue;
+}
+
+.banner {
+	border-width: 10px;
+	opacity: 50%;
+	width: 100%;
+	
+}
+
+.one-forth{
+	font-family: 'font';
+	width: 100%;
+	height: .1%;
+	text-align: center;
+	padding: 5 5 5 5;
+}
+
+#updates{
+	background-color: black;
+	color: white;
+	font-size: 200%;
+	padding: 5 5 5 5;
+}
+article{
+	
+	float: right;
+	margin: auto auto;
+	width: 50%;
+	height: auto;
+	padding-left: 200px;
+
+}
+
+#iitb{
+	padding: 1% 5% 0 2%;
+}
+
+aside.iitb{
+	text
+	float: left;
+	width: 75%;
+	height: 200%;
+}
+
+footer{
+	background-color: black;
+	width: 100%;
+	text-align: center;
+}
+
+.social{
+	align-content:  center;
+	list-style-type: none;
+	text-align: center;
+}
+
+.social li{
+	display: inline;
+}
+
+.social i{
+	font-size: 300%;
+	margin: 1%;
+	padding: 2% 2% 2% 1%;
+	color: white;
+}
+
+.social i:hover{
+	color: grey;
+}
+
+footer.second{
+	text-align: center;
+}
+
+#iconT{
+	size: 200%;
+}
+
+.one-fifth{
+	float: left;
+	font-family: 'font';
+	width: 20%;
+	height: .001%;
+	text-align: center;
+	font-size: 70%;
+	
+}
+
+#updates1{
+	color: white;
+	font-size:100%;
+}
+#img1{
+	height: 947px;
+}
+.one-third{
+	background-color: none;
+	float: left;
+	font-family: 'font';
+	width: 33.33%;
+	height: .001%;
+	text-align: center;
+}
+.heading{
+	padding: 2% 0 0 0 ;
+}
+
+
+    #map-canvas {
+
+      padding: 500 0 0 0;
+      width: 50%;
+      height: 50%;
+    }
+    .gm-style-iw {
+      text-align: center;
+    }
